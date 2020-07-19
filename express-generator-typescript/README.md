@@ -34,6 +34,19 @@ and configuring _tsconfig-paths_ and _module-alias_. Just make sure to update `p
 and `_moduleAliases` in _package.json_ if you want to add/edit the relative paths.
 
 
+## Sample-project
+
+When you run _express-generator-typescript_, it sets up a very simple application with routes for
+adding, updating, deleting, and fetching user objects. This is just to demonstrate how routing is done
+with express.
+
+If you want a fully-secure application, you can pass the `--with-auth` option and you will have an
+application which requires you to logon before calling APIs on user objects. The app is 
+configured with production quality client-side security and uses signed-cookies and jsonwebtokens 
+to store user-session data. If you're new to web-development and still learning about securing websites,
+I highly encourage to use this option.
+
+
 ## Installation
 
 ```sh
@@ -46,29 +59,50 @@ $ npm install -g express-generator-typescript
 ## Quick Start
 
 The quickest way to get started is use npx and pass in the name of the project you want to create.
-If you don't specify a project name, the default _express-gen-project_ will be used instead.
+If you don't specify a project name, the default _express-gen-ts_ will be used instead.
 
 Create the app:
 
 ```bash
-$ npx express-generator-typescript "project name"
+$ npx express-generator-typescript "project name (default is express-gen-ts)"
+OR
+$ npx express-generator-typescript --with-auth "project name (default is express-gen-ts)"
 ```
 
 Start your express-generator-typescript app in development mode at `http://localhost:3000/`:
 
 ```bash
-$ cd "project name" && npm run start-dev
+$ cd "project name" && npm run start:dev
 ```
 
 
 ## Available commands for the server.
 
-- Run the server in development mode: `npm run start-dev`.
+- Run the server in development mode: `npm run start:dev`.
 - Run all unit-tests: `npm test`.
-- Run a single unit-test: `npm test -- "name of test file (i.e. Users)"`.
+- Run a single unit-test: `npm test -- --testFile="name of test file" (i.e. --testFile=Users)`.
 - Check for linting errors: `npm run lint`.
 - Build the project for production: `npm run build`.
 - Run the production build: `npm start`.
+- Run production build with a different env file `npm start -- --env="name of env file" (default is production)`.
+
+
+## Debugging
+During development, _express-generator-typescript_ uses `nodemon` to restart the server when changes
+are detected. If you want to enable debugging for node, you'll need to modify the nodemon configurations.
+This is located under `nodemonConfig:` in `package.json` for the server and `./spec/nodemon.json` for
+unit-testing. For the `exec` property, replace `ts-node` with `node --inspect -r ts-node/register`.
+
+
+## Note for windows users
+
+If you use the `--with-auth` option and are on Windows, the `bcrypt` module tends to be fussy. To
+use this module on Windows you need to make sure you have the node Windows build tools installed.
+I don't want to post instructions because they might change frequently. I would search the Microsoft
+docs on how to setup Node for Windows. To be able to debug in VSCODE on windows I also had to install
+the `node-gyp` module globally as well.
+
+Happy web-deving :)
 
 
 
